@@ -1,0 +1,123 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "TIP",
+  "scopeName": "source.tip",
+  "fileTypes": ["tip"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#function-declaration" },
+    { "include": "#statements" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "include": "#block-comment" },
+        {
+          "name": "comment.line.double-slash.tip",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "block-comment": {
+      "name": "comment.block.tip",
+      "begin": "/\\*",
+      "end": "\\*/",
+      "patterns": [{ "include": "#block-comment" }]
+    },
+    "function-declaration": {
+      "comment": "name(params) followed by '{' (possibly on the next line); keywords such as if/while are excluded",
+      "begin": "^\\s*(?!(?:if|while|return|output|error|var)\\b)([A-Za-z_][A-Za-z0-9_]*)\\s*(\\()(?=[^)]*\\)\\s*(?:\\{|//|/\\*|$))",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.tip" },
+        "2": { "name": "punctuation.definition.parameters.begin.tip" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.parameters.end.tip" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "match": "[A-Za-z_][A-Za-z0-9_]*", "name": "variable.parameter.tip" },
+        { "match": ",", "name": "punctuation.separator.parameters.tip" }
+      ]
+    },
+    "statements": {
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#var-declaration" },
+        { "include": "#keywords" },
+        { "include": "#numbers" },
+        { "include": "#function-call" },
+        { "include": "#field-access" },
+        { "include": "#record-field" },
+        { "include": "#operators" },
+        { "include": "#punctuation" }
+      ]
+    },
+    "var-declaration": {
+      "begin": "\\b(var)\\b",
+      "beginCaptures": { "1": { "name": "storage.type.var.tip" } },
+      "end": ";",
+      "endCaptures": { "0": { "name": "punctuation.terminator.statement.tip" } },
+      "patterns": [
+        { "include": "#comments" },
+        { "match": "[A-Za-z_][A-Za-z0-9_]*", "name": "variable.other.declaration.tip" },
+        { "match": ",", "name": "punctuation.separator.comma.tip" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        { "match": "\\b(if|else|while|return)\\b", "name": "keyword.control.tip" },
+        { "match": "\\balloc\\b", "name": "keyword.other.alloc.tip" },
+        { "match": "\\b(input|output|error)\\b", "name": "keyword.other.io.tip" },
+        { "match": "\\bnull\\b", "name": "constant.language.null.tip" }
+      ]
+    },
+    "numbers": {
+      "match": "\\b[0-9]+\\b",
+      "name": "constant.numeric.integer.tip"
+    },
+    "function-call": {
+      "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
+      "captures": { "1": { "name": "entity.name.function.call.tip" } },
+      "name": "meta.function-call.tip"
+    },
+    "field-access": {
+      "match": "(\\.)\\s*([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "punctuation.accessor.tip" },
+        "2": { "name": "variable.other.property.tip" }
+      }
+    },
+    "record-field": {
+      "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(:)",
+      "captures": {
+        "1": { "name": "variable.other.property.tip" },
+        "2": { "name": "punctuation.separator.key-value.tip" }
+      }
+    },
+    "operators": {
+      "patterns": [
+        { "match": "==", "name": "keyword.operator.comparison.tip" },
+        { "match": ">", "name": "keyword.operator.comparison.tip" },
+        { "match": "=", "name": "keyword.operator.assignment.tip" },
+        { "match": "&", "name": "keyword.operator.pointer.address-of.tip" },
+        {
+          "comment": "'*' right after an operand (identifier, number or ')') is multiplication",
+          "match": "(?<=[A-Za-z0-9_)])(?<!\\breturn|\\boutput|\\berror|\\balloc)\\s*\\*",
+          "name": "keyword.operator.arithmetic.tip"
+        },
+        { "match": "\\*", "name": "keyword.operator.pointer.dereference.tip" },
+        { "match": "[+\\-/]", "name": "keyword.operator.arithmetic.tip" }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        { "match": ";", "name": "punctuation.terminator.statement.tip" },
+        { "match": ",", "name": "punctuation.separator.comma.tip" },
+        { "match": "[{}]", "name": "punctuation.section.block.tip" },
+        { "match": "[()]", "name": "punctuation.section.parens.tip" }
+      ]
+    }
+  }
+}

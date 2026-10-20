@@ -1,0 +1,6 @@
+src/**
+tsconfig.json
+TODO.md
+**/*.map
+.gitignore
+node_modules/**

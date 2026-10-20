@@ -1,0 +1,105 @@
+{
+  "name": "tip-language-spa",
+  "displayName": "TIP Language (SPA)",
+  "description": "Syntax highlighting for TIP programs and a Run/Debug CodeLens that launches the TIP analyzer through Metals.",
+  "version": "0.1.0",
+  "publisher": "VDB",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "extensionDependencies": [
+    "scalameta.metals"
+  ],
+  "activationEvents": [
+    "onLanguage:tip",
+    "workspaceContains:**/src/tip/Tip.scala"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "tip",
+        "aliases": [
+          "TIP",
+          "tip"
+        ],
+        "extensions": [
+          ".tip"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "tip",
+        "scopeName": "source.tip",
+        "path": "./syntaxes/tip.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "tip.run",
+        "title": "Run TIP…",
+        "category": "TIP",
+        "icon": "$(play)",
+        "enablement": "tip.workspaceDetected"
+      },
+      {
+        "command": "tip.debug",
+        "title": "Debug TIP…",
+        "category": "TIP",
+        "icon": "$(debug-alt)",
+        "enablement": "tip.workspaceDetected"
+      },
+      {
+        "command": "tip.runWithLastOptions",
+        "title": "Run TIP (last options)",
+        "category": "TIP",
+        "enablement": "tip.workspaceDetected"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "tip.run",
+          "when": "tip.workspaceDetected && editorLangId == tip"
+        },
+        {
+          "command": "tip.debug",
+          "when": "tip.workspaceDetected && editorLangId == tip"
+        },
+        {
+          "command": "tip.runWithLastOptions",
+          "when": "tip.workspaceDetected && editorLangId == tip"
+        }
+      ],
+      "editor/title/run": [
+        {
+          "command": "tip.run",
+          "when": "tip.workspaceDetected && resourceLangId == tip",
+          "group": "navigation@0"
+        },
+        {
+          "command": "tip.debug",
+          "when": "tip.workspaceDetected && resourceLangId == tip",
+          "group": "navigation@1"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package --skip-license --allow-missing-repository",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "~1.85.0",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.4.0"
+  }
+}
